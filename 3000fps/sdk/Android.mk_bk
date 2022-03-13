@@ -1,0 +1,27 @@
+LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := veFaceSDK
+LOCAL_SRC_FILES := faceUtils.cpp face_manager.cpp aligner.cpp object_detect.cpp feature.cpp tool.cpp
+
+LOCAL_CFLAGS := -D__cpusplus -fopenmp -O3  -ffunction-sections -fdata-sections -fvisibility=hidden
+LOCAL_CPPFLAGS := -D__cpusplus -fopenmp -O3  -ffunction-sections -fdata-sections -fvisibility=hidden
+
+LOCAL_LDFLAGS := -Wl,--gc-sections
+
+LOCAL_LDLIBS := -llog -ljnigraphics -ldl -landroid -lz
+
+ifeq ($(TARGET_ARCH_ABI), armeabi-v7a)
+LOCAL_ARM_NEON := true
+LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7-a -mtune=cortex-a8
+LOCAL_ARM_MODE := arm
+endif
+
+ifeq ($(TARGET_ARCH_ABI), armeabi)
+LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7-a -mtune=cortex-a8
+LOCAL_ARM_MODE := arm
+endif
+
+
+include $(BUILD_SHARED_LIBRARY)
